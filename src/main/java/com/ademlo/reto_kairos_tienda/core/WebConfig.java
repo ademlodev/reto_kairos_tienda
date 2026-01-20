@@ -1,4 +1,4 @@
-package com.ademlo.reto_kairos_tienda;
+package com.ademlo.reto_kairos_tienda.core;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;

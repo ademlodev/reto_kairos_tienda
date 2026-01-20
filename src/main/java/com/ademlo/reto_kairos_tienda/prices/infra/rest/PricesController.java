@@ -1,4 +1,4 @@
-package com.ademlo.reto_kairos_tienda;
+package com.ademlo.reto_kairos_tienda.prices.infra.rest;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
