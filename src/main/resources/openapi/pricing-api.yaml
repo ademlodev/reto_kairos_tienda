@@ -1,0 +1,155 @@
+openapi: 3.0.3
+info:
+  title: Pricing API
+  description: API para consultar el precio final (PVP) aplicable a un producto de una marca en una fecha/hora dada.
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080
+    description: Servidor local de desarrollo
+paths:
+  /api/v1/prices/applicable:
+    get:
+      operationId: getApplicablePrice
+      summary: Obtiene el precio aplicable para un producto y marca en una fecha/hora dada.
+      tags:
+        - Prices
+      parameters:
+        - name: applicationDate
+          in: query
+          description: Fecha y hora de aplicación en formato ISO-8601.
+          required: true
+          schema:
+            type: string
+            format: date-time
+          example: "2020-06-14T10:00:00"
+        - name: productId
+          in: query
+          description: Identificador del producto.
+          required: true
+          schema:
+            type: integer
+            format: int64
+          example: 35455
+        - name: brandId
+          in: query
+          description: Identificador de la marca/cadena.
+          required: true
+          schema:
+            type: integer
+            format: int64
+          example: 1
+      responses:
+        "200":
+          description: Precio aplicable encontrado.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ApplicablePriceResponse"
+              examples:
+                example1:
+                  summary: Precio base día 2020-06-14 10:00
+                  value:
+                    productId: 35455
+                    brandId: 1
+                    priceList: 1
+                    startDate: "2020-06-14T00:00:00"
+                    endDate: "2020-12-31T23:59:59"
+                    price: 35.5
+                    currency: "EUR"
+                    found: true
+        "400":
+          description: Petición inválida (parámetros faltantes o con formato incorrecto).
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              examples:
+                invalidDate:
+                  summary: Formato de fecha inválido
+                  value:
+                    message: "Invalid applicationDate format. Expected ISO-8601."
+                    error: "BAD_REQUEST"
+        "404":
+          description: No se encontró un precio aplicable para los parámetros indicados.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              examples:
+                notFound:
+                  summary: Sin precio para la combinación solicitada
+                  value:
+                    message: "No price found for given brand, product and applicationDate."
+                    error: "NOT_FOUND"
+components:
+  schemas:
+    ApplicablePriceResponse:
+      type: object
+      description: Resultado de la búsqueda de precio aplicable.
+      properties:
+        productId:
+          type: integer
+          format: int64
+          description: Identificador del producto.
+          example: 35455
+        brandId:
+          type: integer
+          format: int64
+          description: Identificador de la marca/cadena.
+          example: 1
+        priceList:
+          type: integer
+          format: int32
+          description: Identificador de la tarifa aplicada.
+          example: 1
+        startDate:
+          type: string
+          format: date-time
+          description: Fecha y hora de inicio de validez de la tarifa.
+          example: "2020-06-14T00:00:00"
+        endDate:
+          type: string
+          format: date-time
+          description: Fecha y hora de fin de validez de la tarifa.
+          example: "2020-12-31T23:59:59"
+        price:
+          type: number
+          format: double
+          description: Precio final de venta (PVP).
+          example: 35.5
+        currency:
+          type: string
+          description: Código de moneda ISO.
+          example: "EUR"
+        found:
+          type: boolean
+          description: Indica si se ha encontrado un precio aplicable.
+          example: true
+      required:
+        - productId
+        - brandId
+        - priceList
+        - startDate
+        - endDate
+        - price
+        - currency
+        - found
+    ErrorResponse:
+      type: object
+      description: Respuesta de error estándar.
+      properties:
+        message:
+          type: string
+          description: Descripción legible del error.
+          example: "Invalid applicationDate format. Expected ISO-8601."
+        error:
+          type: string
+          description: Código de error técnico.
+          enum:
+            - BAD_REQUEST
+            - NOT_FOUND
+          example: "BAD_REQUEST"
+      required:
+        - message
+        - error
+

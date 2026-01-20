@@ -1,3 +1,5 @@
 spring:
   application:
     name: reto_kairos_tienda
+  profiles:
+    active: dev

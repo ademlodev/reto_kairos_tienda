@@ -1,0 +1,7 @@
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    path: /swagger-ui.html
+    url: /openapi/pricing-api.yaml
+

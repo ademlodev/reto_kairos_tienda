@@ -122,6 +122,19 @@ The application will start on the default port `8080` unless configured otherwis
 
 This produces a WAR under `target/`.
 
+## API Contract & Documentation
+
+- **API-first contract**: the HTTP contract for the pricing service is defined in
+  `src/main/resources/openapi/pricing-api.yaml`. This file is the **source of truth**
+  for the `/api/v1/prices/applicable` endpoint.
+- **OpenAPI / Swagger UI**:
+  - OpenAPI JSON: `http://localhost:8080/v3/api-docs`
+  - Swagger UI: `http://localhost:8080/swagger-ui.html`
+
+When implementing the controller logic (e.g. `PricesController`), keep the
+request parameters, response fields and error handling aligned with
+`pricing-api.yaml`.
+
 ## Evaluation Criteria (from the statement)
 
 - Service design and implementation quality
