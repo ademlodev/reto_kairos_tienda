@@ -184,3 +184,25 @@ Feature: Query applicable product price for a brand at a given date and time
     And the response JSON should not contain a "priceList" field
 ```
 
+## Domain alignment with OpenAPI contract
+
+The domain use case `GetApplicablePriceUseCase` located in
+`com.ademlo.reto_kairos_tienda.prices.domain` returns an
+`Optional<ApplicablePrice>`. This maps to the OpenAPI contract in
+`src/main/resources/openapi/pricing-api.yaml` as follows:
+
+- When the `Optional` contains a value, the controller should:
+  - Return HTTP 200.
+  - Map:
+    - `brandId.value` -> `brandId`
+    - `productId.value` -> `productId`
+    - `priceListId.value` -> `priceList`
+    - `startDate` -> `startDate`
+    - `endDate` -> `endDate`
+    - `money.amount` -> `price`
+    - `money.currency` -> `currency`
+  - And set `found=true`.
+- When the `Optional` is empty, the controller should:
+  - Return HTTP 404.
+  - Body matching `ErrorResponse` with `error=\"NOT_FOUND\"`.
+
