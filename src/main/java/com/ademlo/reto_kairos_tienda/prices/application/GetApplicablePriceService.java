@@ -6,6 +6,7 @@ import com.ademlo.reto_kairos_tienda.prices.domain.GetApplicablePriceUseCase;
 import com.ademlo.reto_kairos_tienda.prices.domain.entities.Price;
 import com.ademlo.reto_kairos_tienda.prices.domain.PriceRepository;
 import com.ademlo.reto_kairos_tienda.prices.domain.valueobjects.ProductId;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.Comparator;
@@ -18,6 +19,7 @@ import java.util.Optional;
  * Esta clase forma parte de la capa de aplicación y delega en el
  * repositorio de dominio para obtener los datos necesarios.
  */
+@Service
 public class GetApplicablePriceService implements GetApplicablePriceUseCase {
 
 	private final PriceRepository priceRepository;
