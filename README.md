@@ -1,12 +1,15 @@
 # Reto Kairos Tienda — Pricing API (Spring Boot)
 
-This repository contains a Spring Boot service for **querying the applicable final price (PVP)** for a product of a given brand at a specific application date/time.
+This repository contains a Spring Boot service for **querying the applicable final price (PVP)** for a product of a
+given brand at a specific application date/time.
 
-The challenge is based on a simplified e-commerce pricing table (`PRICES`) with time ranges and a **priority rule** to resolve overlaps.
+The challenge is based on a simplified e-commerce pricing table (`PRICES`) with time ranges and a **priority rule** to
+resolve overlaps.
 
 ## Problem Statement (Summary)
 
-In an e-commerce database we have a `PRICES` table that stores the final price (PVP) and the price list (tariff) that applies to a product of a brand between two dates.
+In an e-commerce database we have a `PRICES` table that stores the final price (PVP) and the price list (tariff) that
+applies to a product of a brand between two dates.
 
 Relevant fields (sample data in the PDF):
 
@@ -15,7 +18,8 @@ Relevant fields (sample data in the PDF):
 - **PRICE_LIST**: price tariff identifier
 - **PRODUCT_ID**: product identifier
 - **PRIORITY**: disambiguation rule when multiple tariffs overlap
-  - If two tariffs match the same date range, the one with **higher `PRIORITY`** (higher numeric value) must be applied.
+    - If two tariffs match the same date range, the one with **higher `PRIORITY`** (higher numeric value) must be
+      applied.
 - **PRICE**: final sale price
 - **CURR**: currency ISO code (e.g., `EUR`)
 
@@ -24,15 +28,15 @@ Relevant fields (sample data in the PDF):
 Expose a REST endpoint that:
 
 - **Inputs** (query parameters):
-  - application date/time
-  - product identifier
-  - brand identifier
+    - application date/time
+    - product identifier
+    - brand identifier
 - **Outputs** (response payload):
-  - product identifier
-  - brand identifier
-  - applicable tariff (`PRICE_LIST`)
-  - application start/end date
-  - applicable final price (`PRICE`)
+    - product identifier
+    - brand identifier
+    - applicable tariff (`PRICE_LIST`)
+    - application start/end date
+    - applicable final price (`PRICE`)
 
 ### Business Rule (Selection)
 
@@ -43,7 +47,8 @@ For a given `(brandId, productId, applicationDateTime)`:
 
 ## Data Source
 
-The service must use an **in-memory database** (e.g. **H2**) and initialize it with the **sample data from the statement**.
+The service must use an **in-memory database** (e.g. **H2**) and initialize it with the **sample data from the statement
+**.
 
 ## API Contract (Suggested)
 
@@ -52,14 +57,14 @@ The statement does not enforce a specific URL, but a typical contract for this c
 - **Method**: `GET`
 - **Path**: `/prices/applicable`
 - **Query parameters**:
-  - `applicationDate` (ISO-8601, e.g. `2020-06-14T10:00:00`)
-  - `productId` (e.g. `35455`)
-  - `brandId` (e.g. `1`)
+    - `applicationDate` (ISO-8601, e.g. `2020-06-14T10:00:00`)
+    - `productId` (e.g. `35455`)
+    - `brandId` (e.g. `1`)
 
 Example:
 
 ```bash
-curl "http://localhost:8080/prices/applicable?applicationDate=2020-06-14T10:00:00&productId=35455&brandId=1"
+curl "http://localhost:8080/api/v1/prices/applicable?applicationDate=2020-06-14T10:00:00&productId=35455&brandId=1"
 ```
 
 Expected response fields:
@@ -128,8 +133,8 @@ This produces a WAR under `target/`.
   `src/main/resources/openapi/pricing-api.yaml`. This file is the **source of truth**
   for the `/api/v1/prices/applicable` endpoint.
 - **OpenAPI / Swagger UI**:
-  - OpenAPI JSON: `http://localhost:8080/v3/api-docs`
-  - Swagger UI: `http://localhost:8080/swagger-ui.html`
+    - OpenAPI JSON: `http://localhost:8080/v3/api-docs`
+    - Swagger UI: `http://localhost:8080/swagger-ui.html`
 
 When implementing the controller logic (e.g. `PricesController`), keep the
 request parameters, response fields and error handling aligned with
