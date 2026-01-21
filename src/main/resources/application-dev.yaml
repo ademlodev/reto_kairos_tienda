@@ -5,3 +5,16 @@ springdoc:
     path: /swagger-ui.html
     url: /openapi/pricing-api.yaml
 
+spring:
+  h2:
+    console:
+      enabled: true
+    path: /h2-console
+  datasource:
+    url: jdbc:h2:mem:pricedb
+    username: sa
+    password: sa
+    driverClassName: org.h2.Driver
+  jpa:
+    defer-datasource-initialization: true
+    database-platform: org.hibernate.dialect.H2Dialect
