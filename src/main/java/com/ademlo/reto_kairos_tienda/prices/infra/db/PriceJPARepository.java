@@ -10,7 +10,6 @@ import java.util.List;
 public interface PriceJPARepository extends JpaRepository<PriceDB, Long> {
 
     @Query("SELECT p FROM PriceDB p " +
-            " WHERE p.brandId = ?1 AND p.productId = ?2 AND p.startDate <= ?3 AND p.endDate >= ?3 " +
-            " ORDER BY p.priority DESC")
+            " WHERE p.brandId = ?1 AND p.productId = ?2 AND p.startDate <= ?3 AND p.endDate >= ?3 ")
     List<PriceDB> findBy(Long brandId, Long productId, Timestamp applicationDate);
 }

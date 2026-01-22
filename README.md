@@ -13,7 +13,7 @@ applies to a product of a brand between two dates.
 
 Relevant fields (sample data in the PDF):
 
-- **BRAND_ID**: brand/chain identifier (e.g., `1 = ZARA`)
+- **BRAND_ID**: brand/chain identifier (e.g., `1 = XXX`)
 - **START_DATE / END_DATE**: date-time range where the tariff applies
 - **PRICE_LIST**: price tariff identifier
 - **PRODUCT_ID**: product identifier

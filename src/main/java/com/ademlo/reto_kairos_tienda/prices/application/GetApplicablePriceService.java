@@ -9,6 +9,7 @@ import com.ademlo.reto_kairos_tienda.prices.domain.valueobjects.ProductId;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,7 +36,7 @@ public class GetApplicablePriceService implements GetApplicablePriceUseCase {
         List<Price> prices = priceRepository.findBy(brandId, productId, applicationDate);
 
         return prices.stream()
-                .findFirst()
+                .max(Comparator.comparing(Price::getPriority))
                 .map(ApplicablePrice::fromPrice);
     }
 }
