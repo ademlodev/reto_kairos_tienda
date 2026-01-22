@@ -1,15 +1,14 @@
 package com.ademlo.reto_kairos_tienda.prices.application;
 
-import com.ademlo.reto_kairos_tienda.prices.domain.entities.ApplicablePrice;
-import com.ademlo.reto_kairos_tienda.prices.domain.valueobjects.BrandId;
 import com.ademlo.reto_kairos_tienda.prices.domain.GetApplicablePriceUseCase;
-import com.ademlo.reto_kairos_tienda.prices.domain.entities.Price;
 import com.ademlo.reto_kairos_tienda.prices.domain.PriceRepository;
+import com.ademlo.reto_kairos_tienda.prices.domain.entities.ApplicablePrice;
+import com.ademlo.reto_kairos_tienda.prices.domain.entities.Price;
+import com.ademlo.reto_kairos_tienda.prices.domain.valueobjects.BrandId;
 import com.ademlo.reto_kairos_tienda.prices.domain.valueobjects.ProductId;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,23 +21,22 @@ import java.util.Optional;
 @Service
 public class GetApplicablePriceService implements GetApplicablePriceUseCase {
 
-	private final PriceRepository priceRepository;
+    private final PriceRepository priceRepository;
 
-	public GetApplicablePriceService(PriceRepository priceRepository) {
-		this.priceRepository = priceRepository;
-	}
+    public GetApplicablePriceService(PriceRepository priceRepository) {
+        this.priceRepository = priceRepository;
+    }
 
-	@Override
-	public Optional<ApplicablePrice> getApplicablePrice(BrandId brandId,
-	                                                    ProductId productId,
-	                                                    LocalDateTime applicationDate) {
+    @Override
+    public Optional<ApplicablePrice> getApplicablePrice(BrandId brandId,
+                                                        ProductId productId,
+                                                        LocalDateTime applicationDate) {
 
-		List<Price> prices = priceRepository.findByBrandIdAndProductId(brandId, productId);
+        List<Price> prices = priceRepository.findBy(brandId, productId, applicationDate);
 
-		return prices.stream()
-				.filter(price -> price.appliesTo(applicationDate))
-				.max(Comparator.comparingInt(Price::getPriority))
-				.map(ApplicablePrice::fromPrice);
-	}
+        return prices.stream()
+                .findFirst()
+                .map(ApplicablePrice::fromPrice);
+    }
 }
 

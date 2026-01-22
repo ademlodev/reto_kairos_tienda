@@ -7,6 +7,8 @@ import com.ademlo.reto_kairos_tienda.prices.domain.valueobjects.ProductId;
 import com.ademlo.reto_kairos_tienda.prices.infra.db.mapper.PriceDBMapper;
 import org.springframework.stereotype.Component;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Component
@@ -21,7 +23,8 @@ public class PriceJPAAdapter implements PriceRepository {
     }
 
     @Override
-    public List<Price> findByBrandIdAndProductId(BrandId brandId, ProductId productId) {
-        return priceDBMapper.toDomainEntity(priceJPARepository.findByBrandIdAndProductId(brandId.getValue(), productId.getValue()));
+    public List<Price> findBy(BrandId brandId, ProductId productId, LocalDateTime applicationDate) {
+        return priceDBMapper.toDomainEntity(priceJPARepository.findBy(brandId.getValue(), productId.getValue(),
+                Timestamp.valueOf(applicationDate)));
     }
 }

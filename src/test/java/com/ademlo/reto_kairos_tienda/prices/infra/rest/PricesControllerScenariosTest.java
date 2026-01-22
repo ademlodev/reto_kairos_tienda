@@ -1,19 +1,19 @@
 package com.ademlo.reto_kairos_tienda.prices.infra.rest;
 
+import com.ademlo.reto_kairos_tienda.core.exceptions.ResourceNotFoundException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
-import org.springframework.context.annotation.Import;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-@Import(TestPriceRepositoryConfig.class)
 class PricesControllerScenariosTest {
 
     @Autowired
@@ -141,7 +141,8 @@ class PricesControllerScenariosTest {
                         .queryParam("productId", "35455")
                         .queryParam("brandId", "1"))
                 .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.error").value("NOT_FOUND"));
+                .andExpect(result -> assertInstanceOf(ResourceNotFoundException.class, result.getResolvedException()));
+
     }
 }
 

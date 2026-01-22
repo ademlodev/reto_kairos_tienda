@@ -4,6 +4,7 @@ import com.ademlo.reto_kairos_tienda.prices.domain.entities.Price;
 import com.ademlo.reto_kairos_tienda.prices.domain.valueobjects.BrandId;
 import com.ademlo.reto_kairos_tienda.prices.domain.valueobjects.ProductId;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -14,6 +15,6 @@ import java.util.List;
  */
 public interface PriceRepository {
 
-	List<Price> findByBrandIdAndProductId(BrandId brandId, ProductId productId);
+    List<Price> findBy(BrandId brandId, ProductId productId, LocalDateTime applicationDate);
 }
 

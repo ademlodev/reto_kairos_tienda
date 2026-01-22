@@ -24,7 +24,7 @@ class PriceRepositoryIntegrationTest {
         BrandId brandId = new BrandId(1L);
         ProductId productId = new ProductId(35455L);
         LocalDateTime applicationDate = LocalDateTime.parse("2020-06-14T10:00:00");
-        List<Price> prices = priceRepository.findByBrandIdAndProductId(brandId, productId);
+        List<Price> prices = priceRepository.findBy(brandId, productId, applicationDate);
         assertThat(prices).isNotEmpty();
         Price applicable = prices.stream()
                 .filter(p -> p.getDateTimeRange().contains(applicationDate))
@@ -41,7 +41,7 @@ class PriceRepositoryIntegrationTest {
         BrandId brandId = new BrandId(1L);
         ProductId productId = new ProductId(35455L);
         LocalDateTime applicationDate = LocalDateTime.parse("2020-06-14T16:00:00");
-        List<Price> prices = priceRepository.findByBrandIdAndProductId(brandId, productId);
+        List<Price> prices = priceRepository.findBy(brandId, productId, applicationDate);
         assertThat(prices).isNotEmpty();
         Price applicable = prices.stream()
                 .filter(p -> p.getDateTimeRange().contains(applicationDate))
@@ -60,7 +60,7 @@ class PriceRepositoryIntegrationTest {
         BrandId brandId = new BrandId(1L);
         ProductId productId = new ProductId(35455L);
         LocalDateTime applicationDate = LocalDateTime.parse("2020-06-14T21:00:00");
-        List<Price> prices = priceRepository.findByBrandIdAndProductId(brandId, productId);
+        List<Price> prices = priceRepository.findBy(brandId, productId, applicationDate);
         assertThat(prices).isNotEmpty();
         Price applicable = prices.stream()
                 .filter(p -> p.getDateTimeRange().contains(applicationDate))
@@ -79,7 +79,7 @@ class PriceRepositoryIntegrationTest {
         BrandId brandId = new BrandId(1L);
         ProductId productId = new ProductId(35455L);
         LocalDateTime applicationDate = LocalDateTime.parse("2020-06-15T10:00:00");
-        List<Price> prices = priceRepository.findByBrandIdAndProductId(brandId, productId);
+        List<Price> prices = priceRepository.findBy(brandId, productId, applicationDate);
         assertThat(prices).isNotEmpty();
         Price applicable = prices.stream()
                 .filter(p -> p.getDateTimeRange().contains(applicationDate))
@@ -98,7 +98,7 @@ class PriceRepositoryIntegrationTest {
         BrandId brandId = new BrandId(1L);
         ProductId productId = new ProductId(35455L);
         LocalDateTime applicationDate = LocalDateTime.parse("2020-06-16T21:00:00");
-        List<Price> prices = priceRepository.findByBrandIdAndProductId(brandId, productId);
+        List<Price> prices = priceRepository.findBy(brandId, productId, applicationDate);
         assertThat(prices).isNotEmpty();
         Price applicable = prices.stream()
                 .filter(p -> p.getDateTimeRange().contains(applicationDate))
@@ -117,7 +117,7 @@ class PriceRepositoryIntegrationTest {
         BrandId brandId = new BrandId(1L);
         ProductId productId = new ProductId(35455L);
         LocalDateTime applicationDate = LocalDateTime.parse("2020-06-15T00:00:00");
-        List<Price> prices = priceRepository.findByBrandIdAndProductId(brandId, productId);
+        List<Price> prices = priceRepository.findBy(brandId, productId, applicationDate);
         assertThat(prices).isNotEmpty();
         Price applicable = prices.stream()
                 .filter(p -> p.getDateTimeRange().contains(applicationDate))
@@ -136,7 +136,7 @@ class PriceRepositoryIntegrationTest {
         BrandId brandId = new BrandId(1L);
         ProductId productId = new ProductId(35455L);
         LocalDateTime applicationDate = LocalDateTime.parse("2020-06-14T18:30:00");
-        List<Price> prices = priceRepository.findByBrandIdAndProductId(brandId, productId);
+        List<Price> prices = priceRepository.findBy(brandId, productId, applicationDate);
         assertThat(prices).isNotEmpty();
         Price applicable = prices.stream()
                 .filter(p -> p.getDateTimeRange().contains(applicationDate))
@@ -151,16 +151,11 @@ class PriceRepositoryIntegrationTest {
     }
 
     @Test
-    void noPriceFound_returns404_withErrorBody() {
+    void noPriceFound_returns_EmptyList() {
         BrandId brandId = new BrandId(1L);
         ProductId productId = new ProductId(35455L);
         LocalDateTime applicationDate = LocalDateTime.parse("2020-01-01T10:00:00");
-        List<Price> prices = priceRepository.findByBrandIdAndProductId(brandId, productId);
-        assertThat(prices).isNotEmpty();
-        Price applicable = prices.stream()
-                .filter(p -> p.getDateTimeRange().contains(applicationDate))
-                .max((p1, p2) -> Integer.compare(p1.getPriority(), p2.getPriority()))
-                .orElse(null);
-        assertThat(applicable).isNull();
+        List<Price> prices = priceRepository.findBy(brandId, productId, applicationDate);
+        assertThat(prices).isEmpty();
     }
 }
