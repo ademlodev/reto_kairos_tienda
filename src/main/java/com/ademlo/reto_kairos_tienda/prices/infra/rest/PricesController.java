@@ -49,12 +49,9 @@ public class PricesController {
 				applicationDate
 		);
 
-		if (result.isEmpty()) {
-			return ResponseEntity.status(404).body(new ErrorResponse(
-					"No price found for given brand, product and applicationDate.",
-					"NOT_FOUND"
-			));
-		}
+        if (result.isEmpty()) {
+            throw new ResourceNotFoundException("No price found for given brand, product and applicationDate.");
+        }
 
 		ApplicablePrice applicablePrice = result.get();
 
